@@ -1,0 +1,8 @@
+{
+  "name": "overcast-time",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Peter Jaros <peter.a.jaros@gmail.com>",
+  "license": "UNLICENSED",
+  "private": true
+}
