@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <script type="text/javascript" id="data">
+      window.data = [
+        [new Date("Sun Jan 17 2018 14:23:20 GMT-0500 (EST)").getTime(), 30],
+        [new Date("Sun Jan 27 2018 14:23:20 GMT-0500 (EST)").getTime(), 20],
+        [new Date("Sun Jan 28 2018 14:23:34 GMT-0500 (EST)").getTime(), 10]
+      ]
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+          [
+            [{ label: "Date", type: "date" }, { label: "Minutes", type: "number" }]
+          ].concat(window.data.map(([date, mins]) => [new Date(date), mins]))
+        );
+
+        var options = {
+          title: "Overcast Minutes",
+          hAxis: { title: "Date", titleTextStyle: { color: "#333" } },
+          vAxis: { minValue: 0 }
+        };
+
+        var chart = new google.visualization.AreaChart(
+          document.getElementById("chart_div")
+        );
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+  </body>
+</html>

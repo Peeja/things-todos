@@ -1,12 +1,7 @@
-require("dotenv").config();
-
-var level = require("level");
-var db = level("./db");
-
 const fetchOvercastHTML = require("./fetchOvercastHTML");
 const timeInMinutes = require("./timeInMinutes");
 
-module.exports = () =>
+module.exports = db =>
   fetchOvercastHTML(process.env.COOKIE)
     .then(timeInMinutes)
-    .then(mins => db.put(new Date(), mins));
+    .then(mins => db.put(new Date().getTime(), mins));

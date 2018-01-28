@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "bluebird": "^3.5.1",
     "cheerio": "^1.0.0-rc.2",
     "dotenv": "^4.0.0",
     "level": "^2.1.2",
