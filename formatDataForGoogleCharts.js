@@ -4,6 +4,7 @@ module.exports = data => {
   const cohortDates = R.pipe(
     R.chain(([timestamp, values]) => values),
     R.map(([date, _minutes]) => date),
+    R.sortBy(d => new Date(d)),
     R.uniq
   )(data);
 
