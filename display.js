@@ -3,6 +3,7 @@
 require("dotenv").config();
 
 const recordMinutes = require("./recordMinutes");
+const formatDataForGoogleCharts = require("./formatDataForGoogleCharts");
 
 const Promise = require("bluebird");
 const fs = Promise.promisifyAll(require("fs"));
@@ -38,6 +39,7 @@ Promise.all([
     .then(() => readAllData(db))
     .tap(() => db.close())
     .then(vs => vs.map(({ key, value }) => [key, value]))
+    .then(formatDataForGoogleCharts)
 ]).then(([html, data]) => {
   const $ = cheerio.load(html);
 

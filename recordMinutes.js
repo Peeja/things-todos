@@ -1,7 +1,7 @@
 const fetchOvercastHTML = require("./fetchOvercastHTML");
-const timeInMinutes = require("./timeInMinutes");
+const timesInMinutes = require("./timesInMinutes");
 
 module.exports = db =>
   fetchOvercastHTML(process.env.COOKIE)
-    .then(timeInMinutes)
-    .then(mins => db.put(new Date().getTime(), mins));
+    .then(timesInMinutes)
+    .then(times => db.put(new Date().getTime(), times));

@@ -1,6 +1,6 @@
-const timeInMinutes = require("./timeInMinutes");
+const timesInMinutes = require("./timesInMinutes");
 
-describe("timeInMinutes", () => {
+describe("timesInMinutes", () => {
   it("correctly totals the time in minutes as available", () => {
     const html = `
 <!DOCTYPE html>
@@ -83,6 +83,17 @@ describe("timeInMinutes", () => {
             </div>
         </div>
     </a>
+    <a class="episodecell" href="/+ICt2Jg">
+        <img class="art" src="https://d1eedt7bo0oujw.cloudfront.net/art?s=30b2b1b56885ee080930e8563904abe1cdcbbc8b462fcd470210f9efb20451a4&w=160&u=https%3A%2F%2Fmedia2.wnyc.org%2Fi%2F1400%2F1400%2F80%2F1%2FRadiolab_WNYCStudios_1400_x.png">
+        <div class="cellcontent">
+            <div class="titlestack">
+                <div class="caption2 singleline">Radiolab</div>
+                <div class="title singleline">Stereothreat</div>
+                <div class="caption2 singleline">
+                    Nov 23, 2017 &bull; 36 min                </div>
+            </div>
+        </div>
+    </a>
 
     </div>
     <div class="pure-u-1-5"></div>
@@ -98,6 +109,10 @@ describe("timeInMinutes", () => {
     </body>
 </html>
 `;
-    expect(timeInMinutes(html)).toBe(157);
+    expect(timesInMinutes(html)).toMatchObject([
+      [new Date("Nov 23, 2017"), 91],
+      [new Date("Nov 30, 2017"), 68],
+      [new Date("Dec 7, 2017"), 34]
+    ]);
   });
 });
