@@ -8,8 +8,10 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "cheerio": "^1.0.0-rc.2",
+    "color": "^3.0.0",
     "dotenv": "^4.0.0",
     "level": "^2.1.2",
+    "moment": "^2.20.1",
     "node-fetch": "^1.7.3",
     "ramda": "^0.25.0"
   },
