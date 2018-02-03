@@ -5,9 +5,6 @@ const Color = require("color");
 const daysAgo = (d, now) => moment(now).diff(d, "days");
 const daysOldToColor = days => Color({ h: days * 3 + 90, s: 100, l: 50 }).hex();
 
-// An experiment in providing a functional let in JS:
-const let_ = (bindings, body) => body(bindings);
-
 module.exports = (data, now) => {
   const cohortDates = R.pipe(
     R.chain(([timestamp, values]) => values),
@@ -38,15 +35,16 @@ module.exports = (data, now) => {
     ],
     series: R.pipe(
       R.reverse,
-      R.addIndex(R.map)((d, idx) => [d, idx]),
+      R.addIndex(R.map)((date, index) => ({
+        date,
+        majorTick: index % 5 === 0
+      })),
       R.reverse,
-      R.map(([d, idx]) =>
-        let_({ majorTick: idx % 5 === 0 }, ({ majorTick }) => ({
-          color: daysOldToColor(daysAgo(d)),
-          visibleInLegend: majorTick,
-          lineWidth: majorTick ? 1 : 0
-        }))
-      )
+      R.map(({ date, majorTick }) => ({
+        color: daysOldToColor(daysAgo(date)),
+        visibleInLegend: majorTick,
+        lineWidth: majorTick ? 1 : 0
+      }))
     )(cohortDates)
   };
 };
