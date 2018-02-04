@@ -3,16 +3,22 @@ const moment = require("moment");
 const Color = require("color");
 
 const daysAgo = (d, now) => moment(now).diff(d, "days");
-const daysOldToColor = days => Color({ h: days * 3 + 90, s: 100, l: 50 }).hex();
+// const daysOldToColor = days => Color({ h: days * 2 + 90, s: 100, l: 50 }).hex();
+const daysOldToColor = days => Color({ h: 0, s: 100, l: Math.max(50, 80 - (0.3 * days)) }).hex();
 
 module.exports = (data, now) => {
-  const cohortDates = R.pipe(
-    R.chain(([timestamp, values]) => values),
-    R.map(([date, _minutes]) => date),
-    R.sortBy(d => new Date(d)),
-    R.reverse,
-    R.uniq
+  const countByCohortDate = R.countBy(d =>
+    moment(d)
+      .startOf("day")
+      .valueOf()
   )(data);
+
+  const cohortDates = R.pipe(
+    R.keys,
+    R.map(Number.parseInt),
+    R.sortBy(R.identity),
+    R.reverse
+  )(countByCohortDate);
 
   return {
     rows: [
@@ -23,15 +29,8 @@ module.exports = (data, now) => {
           type: "number"
         }))(cohortDates)
       ),
-      ...R.map(([timestamp, values]) =>
-        R.pipe(
-          R.fromPairs,
-          R.props(cohortDates),
-          R.map(v => v || 0),
-          R.map(v => v),
-          R.prepend(timestamp)
-        )(values)
-      )(data)
+      [new Date(), ...R.props(cohortDates, countByCohortDate)],
+      [new Date(1), ...R.props(cohortDates, countByCohortDate)]
     ],
     series: R.pipe(
       R.reverse,
